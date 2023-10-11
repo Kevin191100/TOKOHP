@@ -1,0 +1,12 @@
+C:\Users\HP PAVILION\source\repos\TOKOHP\TOKOHP\obj\Debug\TOKOHP.vbprojAssemblyReference.cache
+C:\Users\HP PAVILION\source\repos\TOKOHP\TOKOHP\obj\Debug\TOKOHP.FrmPenyimpanan.resources
+C:\Users\HP PAVILION\source\repos\TOKOHP\TOKOHP\obj\Debug\TOKOHP.Resources.resources
+C:\Users\HP PAVILION\source\repos\TOKOHP\TOKOHP\obj\Debug\TOKOHP.vbproj.GenerateResource.cache
+C:\Users\HP PAVILION\source\repos\TOKOHP\TOKOHP\obj\Debug\TOKOHP.vbproj.CoreCompileInputs.cache
+C:\Users\HP PAVILION\source\repos\TOKOHP\TOKOHP\bin\Debug\TOKOHP.exe.config
+C:\Users\HP PAVILION\source\repos\TOKOHP\TOKOHP\bin\Debug\TOKOHP.exe
+C:\Users\HP PAVILION\source\repos\TOKOHP\TOKOHP\bin\Debug\TOKOHP.pdb
+C:\Users\HP PAVILION\source\repos\TOKOHP\TOKOHP\bin\Debug\TOKOHP.xml
+C:\Users\HP PAVILION\source\repos\TOKOHP\TOKOHP\obj\Debug\TOKOHP.exe
+C:\Users\HP PAVILION\source\repos\TOKOHP\TOKOHP\obj\Debug\TOKOHP.xml
+C:\Users\HP PAVILION\source\repos\TOKOHP\TOKOHP\obj\Debug\TOKOHP.pdb

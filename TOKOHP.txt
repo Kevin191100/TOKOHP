@@ -1,0 +1,161 @@
+Public Class FrmPenyimpanan
+
+    Sub bersih()
+
+        TxtDis.Clear()
+        TxtTipe.Clear()
+        TxtJumlah.Clear()
+        TxtMerek.Clear()
+
+    End Sub
+
+    Sub kuncitombol()
+        TxtDis.Enabled = False
+        TxtTipe.Enabled = False
+        TxtJumlah.Enabled = False
+        TxtMerek.Enabled = False
+        BtnSimpan.Enabled = False
+        BtnUpdate.Enabled = False
+        BtnHapus.Enabled = False
+    End Sub
+    Sub bukatombol()
+        TxtDis.Enabled = True
+        TxtTipe.Enabled = True
+        TxtJumlah.Enabled = True
+        TxtMerek.Enabled = True
+        BtnSimpan.Enabled = True
+        BtnUpdate.Enabled = True
+        BtnHapus.Enabled = True
+    End Sub
+
+    Sub tampildata()
+        Call koneksi()
+        Dim str As String
+        str = "select * from TblDataHP"
+        DA = New OleDb.OleDbDataAdapter(str, conn)
+        DS = New DataSet
+        DA.Fill(DS)
+        DGVBarang.DataSource = DS.Tables(0)
+
+    End Sub
+
+
+
+    Private Sub BtnSimpan_Click(sender As Object, e As EventArgs) Handles BtnSimpan.Click
+        If TxtKode.Text = "" Or TxtMerek.Text = "" Or TxtTipe.Text = "" Or TxtDis.Text = "" Or TxtJumlah.Text = "" Then
+            MessageBox.Show("Semua Data Wajib Diisi")
+            Exit Sub
+        End If
+
+        Try
+            Call koneksi()
+            Dim str As String
+
+            str = "insert into TblDataHP values ('" & TxtKode.Text & "', '" & TxtMerek.Text & "', '" & TxtTipe.Text & "', '" & TxtDis.Text & "','" & TxtJumlah.Text & "')"
+            cmd = New OleDb.OleDbCommand(str, conn)
+            cmd.ExecuteNonQuery()
+
+            MessageBox.Show("Simpan Data HP Berhasil")
+            Call bersih()
+            TxtKode.Clear()
+            Call tampildata()
+
+        Catch ex As Exception
+            MessageBox.Show("Simpan Data HP Gagal")
+            MessageBox.Show(ErrorToString)
+        End Try
+    End Sub
+
+    Private Sub BtnUpdate_Click(sender As Object, e As EventArgs) Handles BtnUpdate.Click
+        Dim peringatan As MsgBoxResult
+        peringatan = MessageBox.Show("Apakah anda yakin untuk mengupdate data ini?", "PENTING!!!", MessageBoxButtons.YesNo, MessageBoxIcon.Question)
+
+        If peringatan = MsgBoxResult.Yes Then
+            Call koneksi()
+            Dim str As String
+
+            str = "UPDATE TblDataHP SET Merek = '" & TxtMerek.Text & "', Tipe = '" & TxtTipe.Text & "', 
+            Distributor = '" & TxtDis.Text & "', Jumlah = '" & TxtJumlah.Text & "'  WHERE Kode = '" & TxtKode.Text & "'"
+            cmd = New OleDb.OleDbCommand(str, conn)
+            cmd.ExecuteNonQuery()
+
+            MessageBox.Show("Data Berhasil di Edit")
+            Call bersih()
+            TxtKode.Clear()
+            Call tampildata()
+        End If
+
+        If peringatan = MsgBoxResult.No Then
+
+        End If
+    End Sub
+
+    Private Sub FrmPenyimpanan_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        TxtKode.MaxLength = 6
+        Call tampildata()
+        Call kuncitombol()
+    End Sub
+
+    Private Sub BtnHapus_Click(sender As Object, e As EventArgs) Handles BtnHapus.Click
+        Dim peringatan2 As MsgBoxResult
+        peringatan2 = MessageBox.Show("Apakah anda yakin untuk menghapus data ini?", "PENTING!!!", MessageBoxButtons.YesNo, MessageBoxIcon.Question)
+
+        If peringatan2 = MsgBoxResult.Yes Then
+            Call koneksi()
+            Dim str As String
+
+            str = "delete * from TblDataHP where Kode = '" & TxtKode.Text & "'"
+            cmd = New OleDb.OleDbCommand(str, conn)
+            cmd.ExecuteNonQuery()
+            MessageBox.Show("Data Berhasil Dihapus")
+            Call bersih()
+            Call tampildata()
+            Call kuncitombol()
+        End If
+        If peringatan2 = MsgBoxResult.No Then
+
+        End If
+
+    End Sub
+
+    Private Sub TxtKode_TextChanged(sender As Object, e As EventArgs) Handles TxtKode.TextChanged
+        If Len(TxtKode.Text) < 6 Then
+            Call bersih()
+            Call kuncitombol()
+            Exit Sub
+        End If
+
+        Try
+            Call koneksi()
+            Dim str As String
+            str = "select * from TblDataHP where Kode = '" & TxtKode.Text & "'"
+            cmd = New OleDb.OleDbCommand(str, conn)
+            RD = cmd.ExecuteReader
+            'perintah buat jalankan cmd RD = cmd.ExecuteReader
+
+            RD.Read()
+            'perintah apabila yang dibaca ketemu artinya kode barang ada yang sama/pernah digunakan
+            If RD.HasRows Then
+                TxtMerek.Text = RD.Item("Merek")
+                TxtTipe.Text = RD.Item("Tipe")
+                TxtDis.Text = RD.Item("Distributor")
+                TxtJumlah.Text = RD.Item("Jumlah")
+                MessageBox.Show("Data Sudah Ada")
+
+                Call bukatombol()
+                BtnSimpan.Enabled = False
+            End If
+
+            'jika kode barang belum digunakan
+            If Not RD.HasRows Then
+                Call bukatombol()
+                BtnHapus.Enabled = False
+                BtnUpdate.Enabled = False
+                Call bersih()
+            End If
+
+        Catch ex As Exception
+
+        End Try
+    End Sub
+End Class
